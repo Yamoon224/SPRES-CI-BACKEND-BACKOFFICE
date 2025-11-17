@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\CV;
+use App\Models\Cv;
 
 class CVRepository extends BaseRepository
 {
