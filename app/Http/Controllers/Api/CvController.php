@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cvs\StoreRequest As StoreCvRequest;
 use App\Http\Requests\Cvs\UpdateRequest As UpdateCvRequest;
 use App\Http\Resources\CvResource;
-use App\Repositories\CvRepository;
+use App\Repositories\CVRepository;
 
-class CvController extends Controller
+class CvController extends Controller  
 {
-    public function __construct(private CvRepository $repository) {}
+    public function __construct(private CVRepository $repository) {}
 
     public function index()
     {
