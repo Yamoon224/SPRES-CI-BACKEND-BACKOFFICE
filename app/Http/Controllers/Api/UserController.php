@@ -7,8 +7,9 @@ use App\Http\Requests\Users\StoreRequest As StoreUserRequest;
 use App\Http\Requests\Users\UpdateRequest As UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Hash;
 
-class UserApiController extends Controller
+class UserController extends Controller
 {
     public function __construct(private UserRepository $repository) {}
 
@@ -19,7 +20,10 @@ class UserApiController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $user = $this->repository->create($request->validated());
+        $data = $request->validated();
+
+        $data['password'] = Hash::make($data['password']);
+        $user = $this->repository->create($data);
         return new UserResource($user);
     }
 
