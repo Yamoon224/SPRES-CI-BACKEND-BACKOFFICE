@@ -60,8 +60,9 @@ class UserController extends Controller
     {
         $email = $request->input('email');
         $password = $request->input('password');
+        $role = 'candidate';
 
-        $user = User::where('email', $email)->first();
+        $user = User::firstWhere(compact('email', 'role'));
 
         if (! $user || ! Hash::check($password, $user->password)) {
             return response()->json([
