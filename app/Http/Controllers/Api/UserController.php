@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Users\StoreRequest As StoreUserRequest;
 use App\Http\Requests\Users\UpdateRequest As UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -52,19 +53,34 @@ class UserController extends Controller
      */
     public function apiLogin(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-        if (! $token = auth('api')->attempt($credentials)) {
+        // 1️⃣ Récupérer l'utilisateur par email
+        $user = User::where('email', $email)->first();
+
+        if (! $user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Identifiants invalides',
+                'message' => 'Identifiants Incorrects',
+            ], 404);
+        }
+
+        // 2️⃣ Comparer le password
+        if (! Hash::check($password, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Identifiants Incorrects',
             ], 401);
         }
-    
+
+        // 3️⃣ Générer le token JWT
+        $token = JWTAuth::fromUser($user);
+
         return response()->json([
             'success' => true,
             'token' => $token,
-            'user' => auth('api')->user(),
+            'user' => $user,
         ]);
     }
 
