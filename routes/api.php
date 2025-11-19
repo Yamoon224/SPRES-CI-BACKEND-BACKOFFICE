@@ -39,7 +39,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
     Route::resource('testimonials', TestimonialController::class);
 
-    Route::post('/login', [AuthenticatedSessionController::class, 'apiLogin']);
+    Route::post('/auth', [AuthenticatedSessionController::class, 'apiLogin']);
     Route::post('/logout', [AuthenticatedSessionController::class, 'apiLogout'])->middleware('jwt.auth');
 });
 
