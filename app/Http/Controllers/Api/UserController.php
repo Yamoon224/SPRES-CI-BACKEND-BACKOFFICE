@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Users\StoreRequest As StoreUserRequest;
 use App\Http\Requests\Users\UpdateRequest As UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
@@ -42,5 +44,40 @@ class UserController extends Controller
     {
         $this->repository->delete($id);
         return response()->json(['message' => 'User deleted successfully']);
+    }
+
+
+    /**
+     * Login API – JWT
+     */
+    public function apiLogin(LoginRequest $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (! $token = auth('api')->attempt($credentials)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Identifiants invalides',
+            ], 401);
+        }
+    
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+            'user' => auth('api')->user(),
+        ]);
+    }
+
+    /**
+     * Logout API – JWT
+     */
+    public function apiLogout()
+    {
+        JWTAuth::invalidate(JWTAuth::getToken());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Déconnexion réussie'
+        ]);
     }
 }
