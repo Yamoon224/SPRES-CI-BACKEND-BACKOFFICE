@@ -24,8 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [AuthenticatedSessionController::class, 'apiLogin']);
-Route::post('/logout', [AuthenticatedSessionController::class, 'apiLogout'])->middleware('jwt.auth');
+
 
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
@@ -39,5 +38,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::resource('users', UserController::class);
 
     Route::resource('testimonials', TestimonialController::class);
+
+    Route::post('/login', [AuthenticatedSessionController::class, 'apiLogin']);
+    Route::post('/logout', [AuthenticatedSessionController::class, 'apiLogout'])->middleware('jwt.auth');
 });
 
