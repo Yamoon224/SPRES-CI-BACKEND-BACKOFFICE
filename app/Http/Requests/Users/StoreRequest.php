@@ -14,10 +14,17 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'email', 'max:100', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:6'],
-            'role' => ['nullable', 'string', 'max:50'],
+            'full_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:150', 'unique:users,email'],
+            'phone' => ['required', 'string', 'max:30'],
+            'password' => ['required', 'string', 'min:6', 'max:255'],
+
+            'status' => ['nullable', 'in:ENABLE,DISABLE'], // ENUM
+            'locale' => ['nullable', 'string', 'max:4'],
+
+            'role' => ['nullable', 'in:candidate,recruiter,admin'], // ENUM
+
+            'company_id' => ['nullable', 'integer', 'exists:companies,id'],
         ];
     }
 }

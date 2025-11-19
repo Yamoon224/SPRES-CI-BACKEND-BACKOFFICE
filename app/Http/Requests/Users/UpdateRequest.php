@@ -13,13 +13,31 @@ class UpdateRequest extends FormRequest
 
     public function rules(): array
     {
+        // Si ta route est du type /users/{user}
+        // $this->route('user') retourne l'ID ou le modèle User
         $userId = $this->route('user');
 
         return [
-            'name' => ['sometimes', 'string', 'max:100'],
-            'email' => ['sometimes', 'email', 'max:100', 'unique:users,email,' . $userId],
-            'password' => ['nullable', 'string', 'min:6'],
-            'role' => ['nullable', 'string', 'max:50'],
+            'full_name' => ['sometimes', 'string', 'max:255'],
+
+            'email' => [
+                'sometimes',
+                'email',
+                'max:150',
+                'unique:users,email,' . $userId
+            ],
+
+            'phone' => ['sometimes', 'string', 'max:30'],
+
+            'password' => ['nullable', 'string', 'min:6', 'max:255'],
+
+            'status' => ['nullable', 'in:ENABLE,DISABLE'], // ENUM
+
+            'locale' => ['nullable', 'string', 'max:4'],
+
+            'role' => ['nullable', 'in:candidate,recruiter,admin'], // ENUM
+
+            'company_id' => ['nullable', 'integer', 'exists:companies,id'],
         ];
     }
 }
