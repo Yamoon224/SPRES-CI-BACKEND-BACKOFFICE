@@ -53,19 +53,20 @@ class AuthenticatedSessionController extends Controller
     public function apiLogin(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
+        return response()->json($credentials);
 
-        if (! $token = auth('api')->attempt($credentials)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Identifiants invalides',
-            ], 401);
-        }
+        // if (! $token = auth('api')->attempt($credentials)) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Identifiants invalides',
+        //     ], 401);
+        // }
     
-        return response()->json([
-            'success' => true,
-            'token' => $token,
-            'user' => auth('api')->user(),
-        ]);
+        // return response()->json([
+        //     'success' => true,
+        //     'token' => $token,
+        //     'user' => auth('api')->user(),
+        // ]);
     }
 
     /**
