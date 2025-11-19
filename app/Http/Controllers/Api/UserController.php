@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Users\StoreRequest As StoreUserRequest;
-use App\Http\Requests\Users\UpdateRequest As UpdateUserRequest;
+use App\Http\Requests\Users\StoreRequest as StoreUserRequest;
+use App\Http\Requests\Users\UpdateRequest as UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -47,34 +47,23 @@ class UserController extends Controller
         return response()->json(['message' => 'User deleted successfully']);
     }
 
-
     /**
      * Login API – JWT
      */
-    public function apiLogin(LoginRequest $request)
+    public function apiLogin(Request $request)
     {
         $email = $request->input('email');
         $password = $request->input('password');
 
-        // 1️⃣ Récupérer l'utilisateur par email
         $user = User::where('email', $email)->first();
 
-        if (! $user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Identifiants Incorrects',
-            ], 404);
-        }
-
-        // 2️⃣ Comparer le password
-        if (! Hash::check($password, $user->password)) {
+        if (! $user || ! Hash::check($password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Identifiants Incorrects',
             ], 401);
         }
 
-        // 3️⃣ Générer le token JWT
         $token = JWTAuth::fromUser($user);
 
         return response()->json([
