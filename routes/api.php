@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\TestimonialController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,10 @@ use App\Http\Controllers\Api\TestimonialController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/login', [AuthenticatedSessionController::class, 'apiLogin']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'apiLogout'])->middleware('jwt.auth');
+
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('/services', [ServiceController::class, 'index'])->name('services.index');

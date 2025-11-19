@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -44,5 +45,41 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    /**
+     * Login API – JWT
+     */
+    public function apiLogin(LoginRequest $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (! $token = Auth::guard('web')->attempt($credentials)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Identifiants incorrects'
+            ], 401);
+        }
+
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'user' => Auth::user()
+        ]);
+    }
+
+    /**
+     * Logout API – JWT
+     */
+    public function apiLogout()
+    {
+        JWTAuth::invalidate(JWTAuth::getToken());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Déconnexion réussie'
+        ]);
     }
 }
