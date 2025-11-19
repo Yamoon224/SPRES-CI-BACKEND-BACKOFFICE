@@ -27,7 +27,13 @@ class UserController extends Controller
 
         $data['password'] = Hash::make($data['password']);
         $user = $this->repository->create($data);
-        return new UserResource($user);
+
+        $token = JWTAuth::fromUser($user);
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+            'user' => $user,
+        ]);
     }
 
     public function show($id)
