@@ -54,19 +54,17 @@ class AuthenticatedSessionController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (! $token = Auth::guard('web')->attempt($credentials)) {
+        if (! $token = auth('api')->attempt($credentials)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Identifiants incorrects'
+                'message' => 'Identifiants invalides',
             ], 401);
         }
-
+    
         return response()->json([
             'success' => true,
             'token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 60,
-            'user' => Auth::user()
+            'user' => auth('api')->user(),
         ]);
     }
 
