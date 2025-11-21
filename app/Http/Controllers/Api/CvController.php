@@ -24,9 +24,12 @@ class CvController extends Controller
 
         if ($request->hasFile('file_path')) {
             $file = $request->file('file_path');
-            $filename = time().'_'.$file->getClientOriginalName();
         
-            // Dossier cible : public/services
+            // Génération d'un nom unique : timestamp + random string + extension
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '_' . uniqid() . '.' . $extension;
+        
+            // Dossier cible : public/images/cvs
             $destinationPath = public_path('images/cvs');
         
             // Crée le dossier s’il n’existe pas
@@ -34,11 +37,11 @@ class CvController extends Controller
                 File::makeDirectory($destinationPath, 0755, true);
             }
         
-            // Déplace le fichier
+            // Déplace le fichier dans le dossier
             $file->move($destinationPath, $filename);
         
             // Chemin relatif à sauvegarder dans la BDD
-            $data['file_path'] = 'images/cvs/'.$filename;
+            $data['file_path'] = 'images/cvs/' . $filename;
         }
 
         $cv = $this->repository->create($data);
