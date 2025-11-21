@@ -7,6 +7,7 @@ use App\Http\Requests\Cvs\StoreRequest As StoreCvRequest;
 use App\Http\Requests\Cvs\UpdateRequest As UpdateCvRequest;
 use App\Http\Resources\CvResource;
 use App\Repositories\CVRepository;
+use Illuminate\Support\Facades\File;
 
 class CvController extends Controller  
 {
@@ -19,7 +20,28 @@ class CvController extends Controller
 
     public function store(StoreCvRequest $request)
     {
-        $cv = $this->repository->create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('file_path')) {
+            $file = $request->file('file_path');
+            $filename = time().'_'.$file->getClientOriginalName();
+        
+            // Dossier cible : public/services
+            $destinationPath = public_path('images/cvs');
+        
+            // Crée le dossier s’il n’existe pas
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+        
+            // Déplace le fichier
+            $file->move($destinationPath, $filename);
+        
+            // Chemin relatif à sauvegarder dans la BDD
+            $data['file_path'] = 'images/cvs/'.$filename;
+        }
+
+        $cv = $this->repository->create($data);
         return new CvResource($cv);
     }
 

@@ -13,9 +13,7 @@ class CvResource extends JsonResource
             'user'        => new UserResource($this->whenLoaded('user')),
             'file_url'    => env('APP_URL') . '/' . $this->file_url,
             'title'       => $this->title,
-            'skills'      => $this->skills,
-            'education'   => $this->education,
-            'experience'  => $this->experience,
+            'description'  => $this->description,
             'created_at'  => $this->created_at,
         ];
     }
