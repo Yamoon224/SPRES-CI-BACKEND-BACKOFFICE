@@ -25,7 +25,7 @@ class ApplicationController extends Controller
         }
 
         return ApplicationResource::collection($this->repository->paginate(
-            with: ['user', 'jobOffer'], 
+            with: ['user', 'job_offer'], 
             conditions: $conditions
         ));
     }
@@ -38,7 +38,7 @@ class ApplicationController extends Controller
 
     public function show($id)
     {
-        return new ApplicationResource($this->repository->find($id, ['user', 'jobOffer']));
+        return new ApplicationResource($this->repository->find($id, ['user', 'job_offer']));
     }
 
     public function update(UpdateApplicationRequest $request, $id)
