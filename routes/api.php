@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApplicationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CvController;
@@ -38,6 +39,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::resource('candidates', CvController::class);
     Route::resource('jobs', JobOfferController::class);
     Route::resource('users', UserController::class);
+    Route::resource('applies', ApplicationController::class);
 
     Route::resource('testimonials', TestimonialController::class);
 
