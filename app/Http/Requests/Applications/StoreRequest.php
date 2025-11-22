@@ -16,7 +16,7 @@ class StoreRequest extends FormRequest
         return [
             'job_offer_id' => ['required', 'exists:job_offers,id'],
             'user_id' => ['required', 'exists:users,id'],
-            'cv_path' => ['required', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
+            'cv_url' => ['required', 'string'],
             'status' => ['nullable', 'string', 'in:pending,accepted,rejected'],
         ];
     }
