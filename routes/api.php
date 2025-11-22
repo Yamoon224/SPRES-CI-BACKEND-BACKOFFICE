@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CvController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\JobOfferController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\TestimonialController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -35,6 +36,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
 
     Route::resource('candidates', CvController::class);
+    Route::resource('jobs', JobOfferController::class);
     Route::resource('users', UserController::class);
 
     Route::resource('testimonials', TestimonialController::class);

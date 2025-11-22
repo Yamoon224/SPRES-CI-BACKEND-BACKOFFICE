@@ -34,6 +34,27 @@ class CvController extends Controller
         );
     }
 
+    public function stats()
+    {
+        // Récupérer le user_id depuis la requête GET
+        $userId = request()->query('user_id');
+
+        $conditions = [];
+
+        // Ajouter la condition si user_id est présent
+        if ($userId) {
+            $conditions[] = ['user_id', '=', $userId];
+        }
+
+        // Paginate avec relation 'user' et condition user_id
+        return CvResource::collection(
+            $this->repository->paginate(
+                with: ['user'],
+                conditions: $conditions
+            )
+        );
+    }
+
     public function store(StoreCvRequest $request)
     {
         $data = $request->validated();

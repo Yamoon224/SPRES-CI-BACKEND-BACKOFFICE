@@ -14,7 +14,20 @@ class ApplicationController extends Controller
 
     public function index()
     {
-        return ApplicationResource::collection($this->repository->paginate(with: ['user', 'jobOffer']));
+        // Récupérer le user_id depuis la requête GET
+        $userId = request()->query('user_id');
+
+        $conditions = [];
+
+        // Ajouter la condition si user_id est présent
+        if ($userId) {
+            $conditions[] = ['user_id', '=', $userId];
+        }
+
+        return ApplicationResource::collection($this->repository->paginate(
+            with: ['user', 'jobOffer'], 
+            conditions: $conditions
+        ));
     }
 
     public function store(StoreApplicationRequest $request)
