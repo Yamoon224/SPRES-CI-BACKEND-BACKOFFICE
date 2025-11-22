@@ -10,7 +10,7 @@ class ApplicationResource extends JsonResource
     {
         return [
             'id'           => $this->id,
-            'job_offer'    => new JobOfferResource($this->whenLoaded('jobOffer')),
+            'job_offer'    => new JobOfferResource($this->whenLoaded('job_offer')),
             'user'         => new UserResource($this->whenLoaded('user')),
             'cv_url'       => $this->cv_url,
             'cover_letter' => $this->cover_letter,
