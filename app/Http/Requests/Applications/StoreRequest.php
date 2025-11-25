@@ -17,7 +17,7 @@ class StoreRequest extends FormRequest
             'job_offer_id' => ['required', 'exists:job_offers,id'],
             'user_id' => ['required', 'exists:users,id'],
             'cv_url' => ['required', 'string'],
-            'status' => ['nullable', 'string', 'in:pending,accepted,rejected'],
+            'status' => ['nullable', 'string', 'in:submitted,accepted,rejected'],
         ];
     }
 }
