@@ -15,6 +15,8 @@ class UserResource extends JsonResource
             'phone'            => $this->phone,
             'role'             => $this->role,
             'company'          => new CompanyResource($this->whenLoaded('company')),
+
+            'cvs' => CvResource::collection($this->whenLoaded('cvs')),
         ];
     }
 }

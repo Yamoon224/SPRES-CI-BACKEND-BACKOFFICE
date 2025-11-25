@@ -62,7 +62,7 @@ class UserController extends Controller
         $password = $request->input('password');
         $role = 'candidate';
 
-        $user = User::firstWhere(compact('email', 'role'));
+        $user = User::with('cvs')->firstWhere(compact('email', 'role'));
 
         if (! $user || ! Hash::check($password, $user->password)) {
             return response()->json([
