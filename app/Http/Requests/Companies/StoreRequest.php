@@ -21,7 +21,7 @@ class StoreRequest extends FormRequest
             'address' => ['required', 'string', 'max:255'],
             'website' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'logo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:51200'],
+            'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:51200'],
         ];
     }
 }

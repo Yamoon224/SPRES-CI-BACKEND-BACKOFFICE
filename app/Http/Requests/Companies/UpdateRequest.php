@@ -21,7 +21,7 @@ class UpdateRequest extends FormRequest
             'address' => ['sometimes', 'string', 'max:255'],
             'website' => ['sometimes', 'string', 'max:255'],
             'description' => ['sometimes', 'string'],
-            'logo' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:51200'],
+            'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:51200'],
         ];
     }
 }

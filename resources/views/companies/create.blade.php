@@ -60,7 +60,7 @@
                             <!-- Logo -->
                             <div class="col-12">
                                 <label class="form-label" for="logo">@lang('locale.logo')</label>
-                                <input type="file" class="form-control" name="logo" accept="image/*" required>
+                                <input type="file" class="form-control" name="logo" accept="image/*">
                                 @if(isset($company) && $company->logo)
                                     <div class="mt-2">
                                         <img src="{{ asset($company->logo) }}" alt="Company Logo" class="img-thumbnail" width="120">
